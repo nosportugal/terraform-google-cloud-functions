@@ -24,10 +24,6 @@ resource "google_cloudfunctions2_function" "function" {
   description = var.description
   project     = var.project_id
 
-  lifecycle {
-    ignore_changes = [build_config[0].source[0].storage_source[0].generation]
-  }
-
   build_config {
     runtime               = var.runtime
     entry_point           = var.entrypoint
@@ -128,6 +124,8 @@ resource "google_cloudfunctions2_function" "function" {
   }
 
   labels = var.labels != null ? var.labels : {}
+
+  lifecycle { ignore_changes = [build_config[0].source[0].storage_source[0].generation] }
 }
 
 // IAM for invoking HTTP functions (roles/cloudfunctions.invoker)
